@@ -13,16 +13,11 @@ const spotifyClientSecret = process.env.SPOTIFY_CLIENT_SECRET;
 const youtubeClientId = process.env.YOUTUBE_CLIENT_ID;
 const youtubeClientSecret = process.env.YOUTUBE_CLIENT_SECRET;
 
+// Redirect URI setelah login berhasil
 const redirect_uri_login = 'http://localhost:8888/callback';
-const client_id = '';
-const client_secret = '';
-
-// YouTube API konfigurasi
-const youtube_client_id = '500342624967-vh5vjjphpfltbcfj3p38vmb6llk3u5ir.apps.googleusercontent.com';
-const youtube_client_secret = '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';
 const youtube_redirect_uri = 'http://localhost:8888/youtube_callback';
 
- // Tempat menyimpan token YouTube
+// Tempat menyimpan token YouTube
 let youtube_access_token = '';
 
 // Middleware
@@ -34,7 +29,7 @@ app.get('/login', function (req, res) {
     'https://accounts.spotify.com/authorize?' +
       querystring.stringify({
         response_type: 'code',
-        client_id: client_id,
+        client_id: spotifyClientId,
         scope: 'user-read-private user-read-email user-library-read',
         redirect_uri: redirect_uri_login,
       })
@@ -54,21 +49,21 @@ app.get('/callback', function (req, res) {
     headers: {
       Authorization:
         'Basic ' +
-        Buffer.from(client_id + ':' + client_secret).toString('base64'),
+        Buffer.from(spotifyClientId + ':' + spotifyClientSecret).toString('base64'),
     },
     json: true,
   };
   request.post(authOptions, function (error, response, body) {
     const access_token = body.access_token;
-    res.redirect('/token'); // Redirect ke endpoint token
+    res.redirect('/token');
   });
 });
 
 // Login YouTube
 app.get('/youtube_login', (req, res) => {
   const oauth2Client = new google.auth.OAuth2(
-    youtube_client_id,
-    youtube_client_secret,
+    youtubeClientId,
+    youtubeClientSecret,
     youtube_redirect_uri
   );
 
@@ -87,8 +82,8 @@ app.get('/youtube_callback', async (req, res) => {
   const code = req.query.code || null;
 
   const oauth2Client = new google.auth.OAuth2(
-    youtube_client_id,
-    youtube_client_secret,
+    youtubeClientId,
+    youtubeClientSecret,
     youtube_redirect_uri
   );
 
