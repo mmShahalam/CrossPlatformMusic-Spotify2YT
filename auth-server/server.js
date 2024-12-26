@@ -1,7 +1,6 @@
 // Inisialisasi paket
 const express = require('express');
 const request = require('request');
-const querystring = require('querystring');
 const cors = require('cors');
 const { google } = require('googleapis');
 const app = express();
@@ -25,15 +24,14 @@ app.use(cors());
 
 // Login Spotify
 app.get('/login', function (req, res) {
-  res.redirect(
-    'https://accounts.spotify.com/authorize?' +
-      querystring.stringify({
-        response_type: 'code',
-        client_id: spotifyClientId,
-        scope: 'user-read-private user-read-email user-library-read',
-        redirect_uri: redirect_uri_login,
-      })
-  );
+  const params = new URLSearchParams({
+    response_type: 'code',
+    client_id: spotifyClientId,
+    scope: 'user-read-private user-read-email user-library-read',
+    redirect_uri: redirect_uri_login,
+  }).toString();
+
+  res.redirect(`https://accounts.spotify.com/authorize?${params}`);
 });
 
 // Callback Spotify
@@ -49,13 +47,18 @@ app.get('/callback', function (req, res) {
     headers: {
       Authorization:
         'Basic ' +
-        Buffer.from(spotifyClientId + ':' + spotifyClientSecret).toString('base64'),
+        Buffer.from(`${spotifyClientId}:${spotifyClientSecret}`).toString('base64'),
     },
     json: true,
   };
+
   request.post(authOptions, function (error, response, body) {
+    if (error || response.statusCode !== 200) {
+      return res.status(500).send('Failed to authenticate with Spotify');
+    }
+
     const access_token = body.access_token;
-    res.redirect('/token');
+    res.redirect('/token'); // Redirect ke endpoint token
   });
 });
 
@@ -92,7 +95,6 @@ app.get('/youtube_callback', async (req, res) => {
     youtube_access_token = tokens.access_token; // Simpan token
     res.redirect('/token'); // Redirect ke endpoint token
   } catch (error) {
-    console.error('Error during YouTube callback:', error);
     res.status(500).send('Authentication failed');
   }
 });
