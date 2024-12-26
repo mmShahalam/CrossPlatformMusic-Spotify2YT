@@ -2,32 +2,27 @@
 const express = require('express');
 const request = require('request');
 const cors = require('cors');
-const { google } = require('googleapis');
-const app = express();
+const axios = require('axios');
 require('dotenv').config();
+const app = express();
 
 // Akses client_id dan client_secret
 const spotifyClientId = process.env.SPOTIFY_CLIENT_ID;
 const spotifyClientSecret = process.env.SPOTIFY_CLIENT_SECRET;
-const youtubeClientId = process.env.YOUTUBE_CLIENT_ID;
-const youtubeClientSecret = process.env.YOUTUBE_CLIENT_SECRET;
+const youtubeApiKey = process.env.YOUTUBE_API_KEY;
 
 // Redirect URI setelah login berhasil
 const redirect_uri_login = 'http://localhost:8888/callback';
-const youtube_redirect_uri = 'http://localhost:8888/youtube_callback';
-
-// Tempat menyimpan token YouTube
-let youtube_access_token = '';
 
 // Middleware
 app.use(cors());
 
 // Login Spotify
-app.get('/login', function (req, res) {
+app.get('/login', (req, res) => {
   const params = new URLSearchParams({
     response_type: 'code',
     client_id: spotifyClientId,
-    scope: 'user-read-private user-read-email user-library-read',
+    scope: 'user-read-private user-read-email user-library-read playlist-read-private',
     redirect_uri: redirect_uri_login,
   }).toString();
 
@@ -35,7 +30,7 @@ app.get('/login', function (req, res) {
 });
 
 // Callback Spotify
-app.get('/callback', function (req, res) {
+app.get('/callback', (req, res) => {
   const code = req.query.code || null;
   const authOptions = {
     url: 'https://accounts.spotify.com/api/token',
@@ -52,64 +47,95 @@ app.get('/callback', function (req, res) {
     json: true,
   };
 
-  request.post(authOptions, function (error, response, body) {
+  request.post(authOptions, (error, response, body) => {
     if (error || response.statusCode !== 200) {
       return res.status(500).send('Failed to authenticate with Spotify');
     }
 
     const access_token = body.access_token;
-    res.redirect('/token'); // Redirect ke endpoint token
+    res.redirect(`http://localhost:3000/playlists?access_token=${access_token}`);
   });
 });
 
-// Login YouTube
-app.get('/youtube_login', (req, res) => {
-  const oauth2Client = new google.auth.OAuth2(
-    youtubeClientId,
-    youtubeClientSecret,
-    youtube_redirect_uri
-  );
+// Endpoint untuk mendapatkan playlist
+app.get('/playlists', (req, res) => {
+  const access_token = req.query.access_token;
 
-  const scopes = ['https://www.googleapis.com/auth/youtube.readonly'];
+  if (!access_token) {
+    return res.status(400).send('Access token is required');
+  }
 
-  const url = oauth2Client.generateAuthUrl({
-    access_type: 'offline',
-    scope: scopes,
+  const options = {
+    url: 'https://api.spotify.com/v1/me/playlists',
+    headers: { Authorization: `Bearer ${access_token}` },
+    json: true,
+  };
+
+  request.get(options, (error, response, body) => {
+    if (error || response.statusCode !== 200) {
+      return res.status(500).send('Failed to fetch playlists');
+    }
+
+    res.json(body);
   });
-
-  res.redirect(url);
 });
 
-// Callback YouTube
-app.get('/youtube_callback', async (req, res) => {
-  const code = req.query.code || null;
+// Endpoint untuk mendapatkan tracks dalam playlist
+// Tambahkan properti `cover` di response untuk setiap lagu
+app.get('/playlist-tracks', (req, res) => {
+  const { access_token, playlist_id } = req.query;
 
-  const oauth2Client = new google.auth.OAuth2(
-    youtubeClientId,
-    youtubeClientSecret,
-    youtube_redirect_uri
-  );
+  if (!access_token || !playlist_id) {
+    return res.status(400).send('Access token and playlist ID are required');
+  }
+
+  const options = {
+    url: `https://api.spotify.com/v1/playlists/${playlist_id}/tracks`,
+    headers: { Authorization: `Bearer ${access_token}` },
+    json: true,
+  };
+
+  request.get(options, (error, response, body) => {
+    if (error || response.statusCode !== 200) {
+      return res.status(500).send('Failed to fetch playlist tracks');
+    }
+
+    const tracks = body.items.map((item) => ({
+      name: item.track.name,
+      artist: item.track.artists[0].name,
+      cover: item.track.album.images[0]?.url, // Cover lagu
+    }));
+
+    res.json(tracks);
+  });
+});
+
+// Endpoint untuk mencari lagu di YouTube
+app.get('/youtube-search', async (req, res) => {
+  const query = req.query.q;
+
+  if (!query) {
+    console.error('Query is missing');
+    return res.status(400).send('Query is required');
+  }
+
+  console.log(`YouTube Search Query: ${query}`);
+
+  const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=1&q=${encodeURIComponent(
+    query
+  )}&key=${youtubeApiKey}`;
 
   try {
-    const { tokens } = await oauth2Client.getToken(code);
-    youtube_access_token = tokens.access_token; // Simpan token
-    res.redirect('/token'); // Redirect ke endpoint token
+    const response = await axios.get(url);
+    console.log(`YouTube API Response:`, response.data);
+    res.json(response.data.items[0]); // Kirim hasil pertama
   } catch (error) {
-    res.status(500).send('Authentication failed');
-  }
-});
-
-// Token endpoint
-app.get('/token', function (req, res) {
-  if (youtube_access_token) {
-    res.setHeader('Content-Type', 'application/json');
-    res.send(JSON.stringify({ token: youtube_access_token }));
-  } else {
-    res.status(400).send('No YouTube access token available');
+    console.error('YouTube API Error:', error.response?.data || error.message);
+    res.status(500).send('Failed to fetch from YouTube API');
   }
 });
 
 // Menjalankan server
 const port = process.env.PORT || 8888;
-console.log(`Listening on port ${port}. Go to /login or /youtube_login to initiate authentication flow.`);
+console.log(`Listening on port ${port}. Go to /login to initiate authentication flow.`);
 app.listen(port);
