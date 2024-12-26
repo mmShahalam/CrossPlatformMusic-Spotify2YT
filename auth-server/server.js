@@ -81,7 +81,6 @@ app.get('/playlists', (req, res) => {
 });
 
 // Endpoint untuk mendapatkan tracks dalam playlist
-// Tambahkan properti `cover` di response untuk setiap lagu
 app.get('/playlist-tracks', (req, res) => {
   const { access_token, playlist_id } = req.query;
 
@@ -103,7 +102,7 @@ app.get('/playlist-tracks', (req, res) => {
     const tracks = body.items.map((item) => ({
       name: item.track.name,
       artist: item.track.artists[0].name,
-      cover: item.track.album.images[0]?.url, // Cover lagu
+      cover: item.track.album.images[0]?.url,
     }));
 
     res.json(tracks);
