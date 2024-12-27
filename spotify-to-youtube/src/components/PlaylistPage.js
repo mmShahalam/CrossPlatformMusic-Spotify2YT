@@ -28,10 +28,11 @@ function PlaylistPage() {
     <div className="playlist-page">
       <h1>Spotify Playlists</h1>
       {selectedPlaylist ? (
-        <TrackPage 
-          accessToken={accessToken} 
-          playlistId={selectedPlaylist.id} 
-          onBack={() => setSelectedPlaylist(null)} 
+        <TrackPage
+          accessToken={accessToken}
+          playlistId={selectedPlaylist.id}
+          playlistName={selectedPlaylist.name}
+          onBack={() => setSelectedPlaylist(null)}
         />
       ) : (
         <div className="playlists">

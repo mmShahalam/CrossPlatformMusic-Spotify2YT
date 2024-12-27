@@ -2,11 +2,11 @@ import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
 import './TrackPage.css';
 
-function TrackPage({ accessToken, playlistId, onBack }) {
+function TrackPage({ accessToken, playlistId, playlistName, onBack }) {
    const [tracks, setTracks] = useState([]);
    const [youtubeResults, setYoutubeResults] = useState([]);
 
-   const fetchPlaylistTracks = useCallback(async (playlistId) => {
+   const fetchPlaylistTracks = useCallback(async () => {
        const response = await axios.get('http://localhost:8888/playlist-tracks', {
            params: { access_token: accessToken, playlist_id: playlistId },
        });
@@ -15,13 +15,11 @@ function TrackPage({ accessToken, playlistId, onBack }) {
            cover: track.cover || 'https://via.placeholder.com/60',
        }));
        setTracks(tracksWithCovers);
-   }, [accessToken]);
+   }, [accessToken, playlistId]);
 
    useEffect(() => {
-       if (accessToken && playlistId) {
-           fetchPlaylistTracks(playlistId);
-       }
-   }, [accessToken, playlistId, fetchPlaylistTracks]);
+       fetchPlaylistTracks();
+   }, [fetchPlaylistTracks]);
 
    const searchYouTube = async (track) => {
        const query = `${track.name} ${track.artist}`;
@@ -38,8 +36,12 @@ function TrackPage({ accessToken, playlistId, onBack }) {
 
    return (
        <div className="track-page">
-           <h2>Track List</h2>
-           <button className="back-button" onClick={onBack}>Back to Playlists</button>
+           <div className="breadcrumb">
+               <span className="breadcrumb-item" onClick={onBack}>Playlists</span>
+               {' > '}
+               <span className="breadcrumb-item active">{playlistName}</span>
+           </div>
+           <h2>{playlistName} - Track List</h2>
            <button className="search-button" onClick={fetchYouTubeResults}>Search YouTube</button>
            <ul className="track-list">
                {tracks.map((track, index) => (

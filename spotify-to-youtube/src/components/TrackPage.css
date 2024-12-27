@@ -5,6 +5,23 @@
     color: #fff;
 }
 
+.breadcrumb {
+    margin-bottom: 20px;
+    font-size: 14px;
+    color: #b3b3b3;
+}
+
+.breadcrumb-item {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.breadcrumb-item.active {
+    color: #fff;
+    cursor: default;
+    text-decoration: none;
+}
+
 .track-list {
     list-style: none;
     padding: 0;
@@ -65,26 +82,7 @@
     text-decoration: underline;
 }
 
-.back-button {
-    cursor: pointer;
-    background-color: #535353;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 10px 20px;
-    font-size: 14px;
-    font-weight: bold;
-    margin: 20px 0;
-    text-transform: uppercase;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-  }
-  
-  .back-button:hover {
-    background-color: #666666;
-    transform: scale(1.05);
-  }
-  
-  .search-button {
+.search-button {
     cursor: pointer;
     background-color: #1db954;
     color: white;
@@ -96,9 +94,9 @@
     margin: 20px;
     text-transform: uppercase;
     transition: background-color 0.3s ease, transform 0.2s ease;
-  }
-  
-  .search-button:hover {
+}
+
+.search-button:hover {
     background-color: #1ed760;
     transform: scale(1.05);
-  }
+}

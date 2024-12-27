@@ -10,7 +10,6 @@ function App() {
         <Routes>
           <Route path="/" element={<LoginPage />} />
           <Route path="/playlists" element={<PlaylistPage />} />
-          {/* You can add more routes here if needed */}
         </Routes>
       </div>
     </Router>
