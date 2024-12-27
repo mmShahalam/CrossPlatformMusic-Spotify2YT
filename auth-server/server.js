@@ -12,7 +12,7 @@ const spotifyClientSecret = process.env.SPOTIFY_CLIENT_SECRET;
 const youtubeApiKey = process.env.YOUTUBE_API_KEY;
 
 // Redirect URI setelah login berhasil
-const redirect_uri_login = 'https://cross-platform-playlist-spotify2-yt-server.vercel.app/callback'; // Update sesuai URL backend Vercel
+const redirect_uri_login = 'https://cross-platform-playlist-spotify2-yt-server.vercel.app/callback'; // URL backend
 
 // Middleware
 app.use(cors());
@@ -59,7 +59,7 @@ app.get('/callback', (req, res) => {
 
     const access_token = body.access_token;
     res.redirect(
-      `https://frontend-your-project.vercel.app/playlists?access_token=${access_token}` // Update dengan URL frontend
+      `https://cross-platform-playlist-spotify2-yt-client.vercel.app/playlists?access_token=${access_token}` // URL frontend
     );
   });
 });
