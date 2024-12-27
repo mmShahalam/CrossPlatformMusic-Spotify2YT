@@ -1,2 +1,2 @@
 # CrossPlatformPlaylist-YT2Spotify
-Web untuk mentransfer playlist antara YouTube Music dan Spotify. Web ini memanfaatkan YouTube Data API dan Spotify Web API untuk memberikan pengguna cara yang mudah dan praktis untuk menyinkronkan lagu favorit mereka di kedua platform.
+Web untuk membuka lagu-lagu yang ada di playlist Spotify ke Youtube. Web ini memanfaatkan Spotify Web API dan YouTube Data API v3 untuk memberikan pengguna cara yang lebih cepat untuk membuka video klip dari masing-masing lagu di playlist spotify mereka
