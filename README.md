@@ -4,17 +4,17 @@ This project allows users to browse their Spotify playlists and find correspondi
 
 ## 🚀 Features
 - **Spotify Login**: Securely log in with Spotify to access your playlists.
-  - ![Spotify Login - Step 1](https://github.com/user-attachments/assets/cd77fef0-1cee-4e88-8c29-66cabf74da0b)
-  - ![Spotify Login - Step 2](https://github.com/user-attachments/assets/ea2fded7-15a3-4846-9d5b-a835862cd072)
+  ![Spotify Login - Step 1](https://github.com/user-attachments/assets/cd77fef0-1cee-4e88-8c29-66cabf74da0b)
+  ![Spotify Login - Step 2](https://github.com/user-attachments/assets/ea2fded7-15a3-4846-9d5b-a835862cd072)
 
 - **Playlist Display**: View your playlists with details like cover images and track counts.
-  - ![Playlist Display](https://github.com/user-attachments/assets/8d3f0cea-b388-4d74-a9d4-d9ef963fbc2b)
+  ![Playlist Display](https://github.com/user-attachments/assets/8d3f0cea-b388-4d74-a9d4-d9ef963fbc2b)
 
 - **Track Search**: Search for tracks from your playlists on YouTube.
-  - ![Track Search](https://github.com/user-attachments/assets/d2f1d25e-b40d-4d79-bcb6-78d6872744d1)
+  ![Track Search](https://github.com/user-attachments/assets/d2f1d25e-b40d-4d79-bcb6-78d6872744d1)
 
 - **YouTube Integration**: Quickly navigate to YouTube videos for any track.
-  - ![YouTube Integration](https://github.com/user-attachments/assets/de7ddc63-17e6-40fc-8487-204f3e156ed1)
+  ![YouTube Integration](https://github.com/user-attachments/assets/de7ddc63-17e6-40fc-8487-204f3e156ed1)
 
 
 ## 🛠️ Technologies Used
