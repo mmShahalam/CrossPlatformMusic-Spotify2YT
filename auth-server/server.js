@@ -12,10 +12,15 @@ const spotifyClientSecret = process.env.SPOTIFY_CLIENT_SECRET;
 const youtubeApiKey = process.env.YOUTUBE_API_KEY;
 
 // Redirect URI setelah login berhasil
-const redirect_uri_login = 'http://localhost:8888/callback';
+const redirect_uri_login = 'https://cross-platform-playlist-spotify2-yt-server.vercel.app/callback'; // Update sesuai URL backend Vercel
 
 // Middleware
 app.use(cors());
+
+// Route Root
+app.get('/', (req, res) => {
+  res.send('Backend server is running. Use endpoints like /login or /playlists.');
+});
 
 // Login Spotify
 app.get('/login', (req, res) => {
@@ -53,7 +58,9 @@ app.get('/callback', (req, res) => {
     }
 
     const access_token = body.access_token;
-    res.redirect(`http://localhost:3000/playlists?access_token=${access_token}`);
+    res.redirect(
+      `https://frontend-your-project.vercel.app/playlists?access_token=${access_token}` // Update dengan URL frontend
+    );
   });
 });
 
