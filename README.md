@@ -54,4 +54,4 @@ This project allows users to browse their Spotify playlists and find correspondi
 
 
 ## 👨‍💻 Author
-- **Muhammad Mirza Shah Alam**: [Your GitHub Profile](https://github.com/your-username)
+- **Muhammad Mirza Shah Alam**: [GitHub Profile](https://github.com/mmShahalam)
