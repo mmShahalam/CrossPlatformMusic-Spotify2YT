@@ -12,7 +12,7 @@ const spotifyClientSecret = process.env.SPOTIFY_CLIENT_SECRET;
 const youtubeApiKey = process.env.YOUTUBE_API_KEY;
 
 // Redirect URI setelah login berhasil
-const redirect_uri_login = 'https://cross-platform-playlist-spotify2-yt-server.vercel.app/callback'; // URL backend
+const redirect_uri_login = 'crossplatformplaylist-spotify2yt.up.railway.app'; // URL backend
 
 // Middleware
 app.use(cors());
