@@ -3,7 +3,7 @@ import './LoginPage.css';
 
 function LoginPage() {
   const handleLogin = () => {
-    window.location.href = 'http://localhost:8888/login';
+    window.location.href = 'https://crossplatformplaylist-spotify2yt.up.railway.app/login';
   };
 
   return (

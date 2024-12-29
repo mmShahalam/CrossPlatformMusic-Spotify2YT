@@ -18,7 +18,7 @@ function PlaylistPage() {
   }, []);
 
   const fetchPlaylists = async (token) => {
-    const response = await axios.get('http://localhost:8888/playlists', {
+    const response = await axios.get('https://crossplatformplaylist-spotify2yt.up.railway.app/playlists', {
       params: { access_token: token },
     });
     setPlaylists(response.data.items || []);

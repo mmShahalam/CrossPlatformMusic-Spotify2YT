@@ -12,7 +12,7 @@ const spotifyClientSecret = process.env.SPOTIFY_CLIENT_SECRET;
 const youtubeApiKey = process.env.YOUTUBE_API_KEY;
 
 // Redirect URI setelah login berhasil
-const redirect_uri_login = 'crossplatformplaylist-spotify2yt.up.railway.app'; // URL backend
+const redirect_uri_login = 'https://crossplatformplaylist-spotify2yt.up.railway.app/callback'; // URL backend
 
 // Middleware
 app.use(cors());

@@ -7,7 +7,7 @@ function TrackPage({ accessToken, playlistId, playlistName, onBack }) {
    const [youtubeResults, setYoutubeResults] = useState([]);
 
    const fetchPlaylistTracks = useCallback(async () => {
-       const response = await axios.get('http://localhost:8888/playlist-tracks', {
+       const response = await axios.get('https://crossplatformplaylist-spotify2yt.up.railway.app/playlist-tracks', {
            params: { access_token: accessToken, playlist_id: playlistId },
        });
        const tracksWithCovers = response.data.map((track) => ({
@@ -23,7 +23,7 @@ function TrackPage({ accessToken, playlistId, playlistName, onBack }) {
 
    const searchYouTube = async (track) => {
        const query = `${track.name} ${track.artist}`;
-       const response = await axios.get(`http://localhost:8888/youtube-search`, {
+       const response = await axios.get(`https://crossplatformplaylist-spotify2yt.up.railway.app/youtube-search`, {
            params: { q: query },
        });
        return response.data;
