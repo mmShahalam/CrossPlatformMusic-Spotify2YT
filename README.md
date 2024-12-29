@@ -1,4 +1,4 @@
-# 🎵 CrossPlatformPlaylist-YT2Spotify 🎥
+# 🎵 CrossPlatformMusic-Spotify2YT 🎥
 This project allows users to browse their Spotify playlists and find corresponding YouTube videos for each track. Built using Node.js and React, it integrates the Spotify and YouTube APIs to create a cross-platform music experience. This can be accessed using the url: https://cross-platform-playlist-spotify2-yt-client.vercel.app
 
 
