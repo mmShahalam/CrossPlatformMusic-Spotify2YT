@@ -27,7 +27,7 @@ This project allows users to browse their Spotify playlists and find correspondi
 - **APIs**:
   - Spotify Web API
   - YouTube Data API
-- **Deployment**: Vercel
+- **Deployment**: Vercel (React), Railway (Node.js)
 
 
 
@@ -35,7 +35,7 @@ This project allows users to browse their Spotify playlists and find correspondi
 ## 📂 Project Structure
 ### **Backend**
 - `server.js`: Handles Spotify authentication, playlist retrieval, and YouTube search.
-- Deployed at: [Backend URL](https://cross-platform-playlist-spotify2-yt-server.vercel.app)
+- Deployed at: [Backend URL](https://crossplatformplaylist-spotify2yt.up.railway.app/)
 
 ### **Frontend**
 - `src`: React components for login, playlist, and track display.
